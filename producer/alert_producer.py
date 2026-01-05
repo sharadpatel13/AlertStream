@@ -10,6 +10,8 @@ producer = KafkaProducer(
     value_serializer=lambda v: json.dumps(v).encode("utf-8")
 )
 
+topic = "incident_alerts" 
+
 systems = ["HPE-NONSTOP", "MAINFRAME", "LINUX-OPS"]
 alerts = ["PROCESS_DUMP", "CPU_SPIKE", "DISK_FULL"]
 components = ["$ZPMON", "$DBMON", "$APPMON"]
@@ -26,8 +28,8 @@ while True:
         "message": "Internal monitoring alert",
         "timestamp": datetime.utcnow().isoformat()
     }
-    
-    producer.send("incident_alerts", alert)
+     
+    producer.send(topic, value=alert)
     print("Sent alert:", alert)
     
     time.sleep(3)  # wait 3 seconds before sending next alert
