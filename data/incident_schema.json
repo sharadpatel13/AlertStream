@@ -1,0 +1,47 @@
+[
+  {
+    "incident_id": "INC1001",
+    "system": "HPE-NONSTOP",
+    "component": "$ZPMON",
+    "alert_type": "PROCESS_DUMP",
+    "severity": "HIGH",
+    "message": "Process $ZPMON abended unexpectedly",
+    "timestamp": "2026-01-02T10:10:00"
+  },
+  {
+    "incident_id": "INC1002",
+    "system": "MAINFRAME",
+    "component": "$JCLRUN",
+    "alert_type": "CPU_SPIKE",
+    "severity": "MEDIUM",
+    "message": "CPU usage exceeded threshold on MAINFRAME batch job",
+    "timestamp": "2026-01-02T10:12:30"
+  },
+  {
+    "incident_id": "INC1003",
+    "system": "LINUX-OPS",
+    "component": "disk-monitor",
+    "alert_type": "DISK_FULL",
+    "severity": "HIGH",
+    "message": "Disk usage exceeded 95% on /var/log",
+    "timestamp": "2026-01-02T10:15:00"
+  },
+  {
+    "incident_id": "INC1004",
+    "system": "HPE-NONSTOP",
+    "component": "$ZPMON",
+    "alert_type": "PROCESS_DUMP",
+    "severity": "LOW",
+    "message": "Process $ZPMON restarted automatically",
+    "timestamp": "2026-01-02T10:18:00"
+  },
+  {
+    "incident_id": "INC1005",
+    "system": "MAINFRAME",
+    "component": "$JCLRUN",
+    "alert_type": "CPU_SPIKE",
+    "severity": "HIGH",
+    "message": "CPU spike repeated during end-of-day batch",
+    "timestamp": "2026-01-02T10:20:00"
+  }
+]
