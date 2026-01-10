@@ -1,4 +1,6 @@
 import os
+import shutil
+from datetime import datetime
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col, window, count, to_timestamp
 from pyspark.sql.types import StructType, StructField, StringType
@@ -9,9 +11,20 @@ from pyspark.sql.types import StructType, StructField, StringType
 os.environ["HADOOP_HOME"] = r"C:\hadoop"
 os.environ["SPARK_LOCAL_DIRS"] = r"C:/Users/SHARAD/spark_temp"
 
-# Make sure output and checkpoint directories exist
+# ---------------------------
+# Helper: Reset checkpoints
+# ---------------------------
+def reset_checkpoint(path):
+    shutil.rmtree(path, ignore_errors=True)
+    os.makedirs(path, exist_ok=True)
+
+reset_checkpoint("C:/Users/SHARAD/checkpoint_csv")
+reset_checkpoint("C:/Users/SHARAD/checkpoint_console")
+
+# ---------------------------
+# Make sure output folder exists
+# ---------------------------
 os.makedirs("C:/Users/SHARAD/output", exist_ok=True)
-os.makedirs("C:/Users/SHARAD/checkpoint_new", exist_ok=True)
 
 # ---------------------------
 # Spark Session
@@ -86,17 +99,21 @@ console_query = aggregated_flat.writeStream \
     .outputMode("append") \
     .format("console") \
     .option("truncate", False) \
+    .option("checkpointLocation", "C:/Users/SHARAD/checkpoint_console") \
     .trigger(processingTime="10 seconds") \
     .start()
 
 # ---------------------------
-# Write to CSV
+# Write to CSV (timestamped folder)
 # ---------------------------
+output_path = f"C:/Users/SHARAD/output/run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+os.makedirs(output_path, exist_ok=True)
+
 csv_query = aggregated_flat.writeStream \
     .outputMode("append") \
     .format("csv") \
-    .option("path", "C:/Users/SHARAD/output") \
-    .option("checkpointLocation", "C:/Users/SHARAD/checkpoint_new") \
+    .option("path", output_path) \
+    .option("checkpointLocation", "C:/Users/SHARAD/checkpoint_csv") \
     .option("header", True) \
     .trigger(processingTime="10 seconds") \
     .start()
@@ -105,10 +122,10 @@ csv_query = aggregated_flat.writeStream \
 # Await termination safely
 # ---------------------------
 try:
-    csv_query.awaitTermination()  # runs continuously until stopped
+    csv_query.awaitTermination()
 except KeyboardInterrupt:
     print("Stopping streaming...")
 finally:
     console_query.stop()
     csv_query.stop()
-    print("Streaming stopped. CSV output is ready.")
+    print(f"Streaming stopped. CSV output is ready at: {output_path}")

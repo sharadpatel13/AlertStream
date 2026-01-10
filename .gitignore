@@ -1,4 +1,10 @@
+# Spark generated data
+output/
+checkpoint*/
+*.crc
+
+# Python
 .venv/
 __pycache__/
 *.pyc
-.vscode/
+
