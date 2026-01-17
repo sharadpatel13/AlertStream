@@ -1,6 +1,6 @@
 import os
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, avg, max as spark_max
+from pyspark.sql.functions import col, avg, to_date, current_date
 
 # ---------------------------
 # Spark Session
@@ -23,6 +23,12 @@ os.makedirs(OUTPUT_PATH, exist_ok=True)
 # ---------------------------
 df = spark.read.option("header", True).csv(INPUT_PATH)
 
+# ---------------------------
+# Filter for Today's Alerts
+# ---------------------------
+df = df.withColumn("window_start_date", to_date("window_start")) \
+       .filter(col("window_start_date") == current_date())
+
 # Cast numeric columns
 df = df.select(
     col("system"),
@@ -31,7 +37,7 @@ df = df.select(
     col("window_end")
 )
 
-print("\n=== Raw Aggregated Data ===")
+print("\n=== Raw Aggregated Data (Today) ===")
 df.show(truncate=False)
 
 # ---------------------------

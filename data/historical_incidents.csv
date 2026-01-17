@@ -1,0 +1,7 @@
+incident_id,system,component,alert_type,description,resolution,mean_time_to_fix
+INC1001,HPE-NONSTOP,$ZPMON,PROCESS_DUMP,Process ZPMON crashed repeatedly,Restart ZPMON and apply patch 12.3,12
+INC1002,MAINFRAME,DB2,LOCK_TIMEOUT,Database locks exhausted,Kill blocking sessions and restart DB2,18
+INC1003,LINUX-OPS,CRON,JOB_FAIL,Nightly job failed,Fix file permission and rerun job,6
+INC1004,HPE-NONSTOP,$ZPMON,PROCESS_DUMP,Memory leak caused ZPMON crash,Restart and increase heap,15
+INC1005,MAINFRAME,CICS,TRANSACTION_FAIL,CICS transactions stuck,Restart CICS region,10
+INC1006,LINUX-OPS,NGINX,HTTP_500,Web server returning 500 errors,Restart NGINX and clear cache,5

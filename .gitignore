@@ -2,9 +2,14 @@
 output/
 checkpoint*/
 *.crc
+storage/processed/incident_metrics/*.csv
+storage/_SUCCESS
+storage/part-*
+
+# Dashboards / HTML output
+incident_dashboard.html
 
 # Python
 .venv/
 __pycache__/
 *.pyc
-
